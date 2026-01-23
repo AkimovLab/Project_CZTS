@@ -15,10 +15,6 @@ Step4 reads the Step3 output folder containing (for each MD step index):
 In the script this is set by:
 `path_to_save_sd_Hvibs = /path/to/step3/results_folder`
 
-Example time window (your current setup):
-- `istep = 1000`
-- `fstep = 4998`
-
 ## What the script does
 1) Reads adiabatic energies `E(t)` from the diagonal of `Hvib_ci_<step>_re.npz`  
 2) Reads time overlap matrices `St(t,t+dt)` from `St_ci_<step>_re.npz`  
@@ -53,6 +49,6 @@ Each folder contains saved observables from `properties_to_save`, typically incl
 
 These outputs are later post processed to generate:
 - population dynamics plots
-- time energy spectrograms (TRPES style)
+- time energy spectrograms
 - fitted relaxation times
 and then used for comparing methods and for the manuscript/SI figures.
