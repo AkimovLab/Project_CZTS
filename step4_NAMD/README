@@ -1,0 +1,58 @@
+# Step4: NBRA NAMD (surface hopping dynamics)
+
+## Purpose
+Run nonadiabatic molecular dynamics (NAMD) with LIBRA using the NBRA workflow.
+This step propagates electronic dynamics along the MD trajectory using data from Step3
+(vibronic Hamiltonians and time overlap matrices) and produces state populations vs time
+for different surface hopping methods (FSSH, FSSH2, GFSH, IDA, etc.).
+
+## Inputs (from Step3)
+Step4 reads the Step3 output folder containing (for each MD step index):
+- `Hvib_ci_<step>_re.npz`  (real part, used here to read adiabatic energies from the diagonal)
+- `Hvib_ci_<step>_im.npz`  (imaginary part, used here as NAC matrix)
+- `St_ci_<step>_re.npz`    (time overlap matrices)
+
+In the script this is set by:
+`path_to_save_sd_Hvibs = /path/to/step3/results_folder`
+
+Example time window (your current setup):
+- `istep = 1000`
+- `fstep = 4998`
+
+## What the script does
+1) Reads adiabatic energies `E(t)` from the diagonal of `Hvib_ci_<step>_re.npz`  
+2) Reads time overlap matrices `St(t,t+dt)` from `St_ci_<step>_re.npz`  
+3) Reads NACs from `Hvib_ci_<step>_im.npz` and builds the vibronic Hamiltonian:
+   `Hvib(t) = diag(E(t)) - i * NAC(t)`
+4) Computes average decoherence times and energy gaps (saved as `avg_deco.txt`)
+5) Runs NBRA surface hopping dynamics using a selected recipe:
+   - FSSH:  `fssh_nbra.load(dyn_general)`
+   - FSSH2: `fssh2_nbra.load(dyn_general)`
+   - GFSH:  `gfsh_nbra.load(dyn_general)`
+   - IDA:   `ida_nbra.load(dyn_general)`
+   (others can be enabled similarly)
+
+## Key run settings to edit
+- `istate` : initial excited state index (example: 118)
+- `dt`     : time step in fs (must match Step3; example: 1.0 fs)
+- `ntraj`  : trajectories per `icond` (example: 100)
+- `ICONDS` : list of initial conditions to run (example: `range(0,4000,400)`)
+- `nthreads`: number of parallel processes (example: 8)
+
+## Outputs
+For each initial condition `icond`, the script creates a folder:
+- `FSSH_NBRA_icond_<icond>`
+- `FSSH2_NBRA_icond_<icond>`
+- `GFSH_NBRA_icond_<icond>`
+- `IDA_NBRA_icond_<icond>`
+
+Each folder contains saved observables from `properties_to_save`, typically including:
+- time grid
+- surface hopping populations `sh_pop_adi`
+- state expanded populations `se_pop_adi`
+
+These outputs are later post processed to generate:
+- population dynamics plots
+- time energy spectrograms (TRPES style)
+- fitted relaxation times
+and then used for comparing methods and for the manuscript/SI figures.
