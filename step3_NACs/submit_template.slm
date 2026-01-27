@@ -1,0 +1,32 @@
+#!/bin/bash -l
+#SBATCH --account=alexeyak
+#SBATCH --partition=valhalla  --qos=valhalla
+#SBATCH --clusters=faculty
+##SBATCH --partition=general-compute  --qos=general-compute
+##SBATCH --clusters=ub-hpc
+#SBATCH --time=36:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=120000
+##SBATCH --mail-user=laylahei@buffalo.edu
+##SBATCH --mail-type="ALL"
+
+# Echo SLURM environment info
+echo "SLURM_JOBID=$SLURM_JOBID"
+echo "SLURM_JOB_NODELIST=$SLURM_JOB_NODELIST"
+echo "SLURM_NNODES=$SLURM_NNODES"
+echo "SLURMTMPDIR=$SLURMTMPDIR"
+echo "working directory=$SLURM_SUBMIT_DIR"
+
+# Load modules and set up environment
+module use /projects/academic/cyberwksp21/MODULES
+module load libra/devel3
+export LD_LIBRARY_PATH=/projects/academic/cyberwksp21/SOFTWARE_NEW_ENV/libra/devel/_build6/src:$LD_LIBRARY_PATH
+export PYTHONPATH=/projects/academic/cyberwksp21/SOFTWARE_NEW_ENV/libra/devel/_build6/src:$PYTHONPATH
+
+# Confirm Python path
+which python
+
+# Run Step 3 script
+python step3.py
