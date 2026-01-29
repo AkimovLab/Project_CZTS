@@ -11,11 +11,10 @@ Run CP2K calculations for geometries sampled from the Step 1 trajectory and gene
 ## Inputs
 
 
-- distribute\_jobs.py: distributes the selected trajectory window into job folders (job1, job2, …) and launches Step 2.
 
-- run\_template.py: defines Step 2 parameters (orbital window, periodic cell, trajectory path) and runs the workflow.
+- `run_template.py`: defines Step 2 parameters (orbital window, periodic cell, trajectory path) and runs the workflow.
 
-- submit\_template.slm: execution script used in each job directory.
+- `submit_template.slm`: execution script used in each job directory.
 
 - `es_diag_temp.inp`: CP2K diagonalization input used for the electronic structure calculations and printed outputs.
 
