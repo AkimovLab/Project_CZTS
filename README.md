@@ -1,4 +1,5 @@
-### Folders
+### Project_CZTS
+## Folders
 
 - `step1` – Ground-state molecular dynamics of CZTS using CP2K  
   > Used to generate thermally equilibrated geometries for excited-state calculations.
@@ -12,7 +13,13 @@
 - `step4` – Surface hopping simulations  
   > Performs nonadiabatic molecular dynamics using surface hopping to track population evolution and relaxation dynamics.
 
-### Note
+## Note
 
 - The steps should be completed in order: `step1`, `step2`, `step3`, and `step4`.
-# Project_CZTS
+
+## Compressed outputs
+
+Some outputs are provided as compressed `.tar.bz2` archives. To extract them, run:
+
+
+tar -xjf <archive>.tar.bz2
